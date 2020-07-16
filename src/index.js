@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Demo from './Demo';
+import Avatar from './Avatar';
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <Demo />
+    <Avatar />
   </React.StrictMode>,
   document.getElementById('root')
 );
