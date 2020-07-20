@@ -8,9 +8,9 @@ import User from '../Component/User.jsx';
 const Router = () => {
     return (
         <BrowserRouter>
-            <Route path="/users" component={User} />
-            <Route path="/login" component={LoginForm} />
-            <Route path="/addUser" component={SignUpForm} />
+            <Route path="/userList" component={User} />
+            <Route path="/loginUser" component={LoginForm} />
+            <Route path="/registerUser" component={SignUpForm} />
         </BrowserRouter>
     );
 };

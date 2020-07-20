@@ -25,7 +25,7 @@ class LoginForm extends Component {
                     <Button className="loginbutton" type="submit" fullwidth variant="contained" color="primary" >Sign-In</Button>
                     <Grid Container className="grid">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link href="http://localhost:3000/registerUser" variant="body2">
                                 {"Don't have an account? Sign up"}
                             </Link>
                         </Grid>
