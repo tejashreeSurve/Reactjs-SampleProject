@@ -1,0 +1,21 @@
+.signupcard {
+    margin-top: 100px;
+    margin-left: 350px;
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.signupavatar {
+    display: flex;
+    align-items: center;
+    margin-left: 200px;
+}
+
+.userinfo {
+    margin-top: 20px;
+}
+
+.signupLogin {
+    align-items: center;
+}

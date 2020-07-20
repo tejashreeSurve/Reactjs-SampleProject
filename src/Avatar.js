@@ -36,7 +36,7 @@ class Avatar extends Component {
             },
             {
                 id: 4,
-                name: "Shivani",
+                name: "Diyu",
                 work: "Full Stack"
             }]
         const arrayAvatarCard = avatarArrayList.map((avatarCard, i) => {

@@ -4,11 +4,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Avatar from './Avatar';
-
+import LoginForm from './Component/LoginForm.jsx';
+import SignUpForm from './Component/SignUpForm';
+import User from './Component/User';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Avatar />
+  <App></App>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,0 +1,32 @@
+.loginform {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.loginpaper {
+    box-decoration-break: initial;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loginavatar {
+    margin: 15px;
+}
+
+.loginbutton {
+    padding: 25px;
+}
+
+.container {
+    border-radius: 2px;
+}
+
+.boxname {
+    border: 2px;
+}
+
+.grid {
+    padding: 10px;
+}
