@@ -70,12 +70,13 @@ class SignUpForm extends Component {
           user.userEmail = this.state.userEmail;
           user.password = this.state.password;
           console.log (user);
-    
+            
           addUser (user)
             .then (Response => {
               console.log (Response, 'User Registered successfully!!');
               alert (`User Registered successfully`);
-            })
+              this.props.history.push("/loginUser");  
+                      })
             .catch (error => {
               console.log ('Error', error.response);
               console.log (error.response.data.message, 'User Registration failed');
@@ -97,24 +98,24 @@ render() {
             </div>
             <div className="userinfo" >
 
-                <TextField variant="outlined" margin="normal" required fullWidth="true" id="firstname" label="First Name"
-                    name="firstname" autoComplete="firstname" onChange={this.axios}
+                <TextField variant="outlined" margin="normal" required  id="firstname" label="First Name"
+                    name="fName" autoComplete="fName" onChange={this.axios}
                     error={this.state.errors.fName}
                     helperText={this.state.errors.fName}></TextField>
 
 
                 <TextField variant="outlined" margin="normal" required fullWidth="true"  id="middlename" label="Middle Name"
-                    name="middlename" autoComplete="middlename" onChange={this.axios}
+                    name="mName" autoComplete="mName" onChange={this.axios}
                     error={this.state.errors.mName}
                     helperText={this.state.errors.mName}></TextField>
 
                 <TextField variant="outlined" margin="normal" required fullWidth="true"  id="lastname" label="Last Name"
-                    name="lastname" autoComplete="lastname" onChange={this.axios}
+                    name="lName" autoComplete="lName" onChange={this.axios}
                     error={this.state.errors.lName}
                     helperText={this.state.errors.lame}></TextField>
 
                 <TextField variant="outlined" margin="normal" required fullWidth="true"  id="email" label="Email Address"
-                    name="email" autoComplete="email" onChange={this.axios}
+                    name="userEmail" autoComplete="userEmail" onChange={this.axios}
                     error={this.state.errors.userEmail}
                     helperText={this.state.errors.userEmail}></TextField>
 

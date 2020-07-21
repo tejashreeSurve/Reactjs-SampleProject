@@ -15,3 +15,15 @@ export function addUser(user) {
         }
     );
 }
+
+export function loginUser(loginData){
+    return axoisServices.axiosPost(
+        'http://localhost:9000/login',
+        loginData,
+        {
+            headers:{
+                'Content-Type': 'application/json;charset=utf-8',
+            },
+        }
+    );
+}
