@@ -1,0 +1,14 @@
+.signupcard {
+    margin-top: 5px;
+    margin-left: 350px;
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+.updateForm{
+    margin-top: 20px;
+    margin-left: 350px;
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+}

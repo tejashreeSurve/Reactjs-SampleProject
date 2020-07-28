@@ -1,38 +1,62 @@
 import React, { Component } from 'react';
 import '../Css/User.css';
-
+import { getAllUser } from '../Services/UserServices';
+import {Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
 class User extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            userListArray: []
+        }
+        this.userList = this.userList.bind(this)
+    }
+    componentDidMount(){
+        this.userList();
+    }
+    userList(){
+        var userToken = localStorage.getItem('token');
+
+        getAllUser(userToken).then(response => {
+            console.log(response.data);
+            console.log(response.data.message);
+            this.setState({
+                userListArray: response.data.message
+            })
+
+        })
+
+        console.log("hello" + this.state.userListArray);
+
+    }
+
+   
 
     render() {
+        const arrayList = this.state.userListArray;
         return <div className="container">
             <h2> User List</h2>
             <div>
-                <table className="table">
+                <table className="table" >
                     <thead>
                         <tr>
                             <th>Id</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Password</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Tejashree vasudev surve</td>
-                            <td>teju@gmail.com</td>
-                            <td>teju123</td>
-
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>Tanvi vasudev surve</td>
-                            <td>tanvi@gmail.com</td>
-                            <td>tanvi</td>
-
-                        </tr>
+                        {
+                                arrayList.map(user =>
+                                <tr key={user.userId}>
+                                    <td>{user.userId}</td>
+                                    <td>{user.fName} {user.mName} {user.lName}</td>
+                                    <td><Link to={`/headerBar/user/${this.props.name}/${user.userId}`}>{user.userEmail}</Link></td>
+                                </tr>
+                            )
+                        }
                     </tbody>
                 </table>
             </div>
@@ -40,4 +64,10 @@ class User extends Component {
     }
 }
 
-export default User;
+const mapStateToProps = state =>{
+    console.log(state.name);
+    return{
+        name : state.name,
+      }
+}
+export default connect(mapStateToProps)(User);

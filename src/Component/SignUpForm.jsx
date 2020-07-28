@@ -4,6 +4,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import '../Css/SignUpForm.css';
 import {addUser} from '../Services/UserServices';
 
+
 class SignUpForm extends Component {
 
     constructor(props) {
@@ -64,18 +65,18 @@ class SignUpForm extends Component {
     registrationForm () {
         if (this.validateForm ()) {
           let user = {};
+          
           user.fName = this.state.fName;
           user.mName = this.state.mName;
           user.lName = this.state.lName;
           user.userEmail = this.state.userEmail;
           user.password = this.state.password;
           console.log (user);
-            
           addUser (user)
             .then (Response => {
               console.log (Response, 'User Registered successfully!!');
               alert (`User Registered successfully`);
-              this.props.history.push("/loginUser");  
+              this.props.history.push("/");  
                       })
             .catch (error => {
               console.log ('Error', error.response);
@@ -131,5 +132,6 @@ render() {
     </Card >
 }
 }
+
 
 export default SignUpForm;
