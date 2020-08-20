@@ -1,12 +1,19 @@
-
-
-const userDataReducer = (state = {name: null},action)=>{
-if(action.type === 'ADD_USER'){
+export const userDataReducer = (state = { userdetail: {} }, action) => {
+  if (action.type === "ADD_USER") {
     return {
-        ...state,
-        name:action.payload,
+      ...state,
+      userdetail: action.payload,
     };
-}
-return state;
+  }
+  return state;
 };
-export default userDataReducer;
+
+export const fetchDataReducer = (state = { users: [] }, action) => {
+  if (action.type === "FETCH_USER") {
+    return {
+      ...state,
+      users: action.payload,
+    };
+  }
+  return state;
+};

@@ -1,19 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import store from './ReduxConnection/store.jsx';
-import {Provider} from 'react-redux';
-
-
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import store from "./ReduxConnection/store.jsx";
+import { Provider } from "react-redux";
+import FullScreenLoader from "./Component/FullScreenLoader.jsx";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
+      <FullScreenLoader />
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

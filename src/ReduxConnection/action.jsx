@@ -1,10 +1,13 @@
-
-
-export const addNewUser=(name)=>{
-    return{
-        type:'ADD_USER',
-        payload:name,
-    }
+export function addNewUser(userdetail) {
+  return {
+    type: "ADD_USER",
+    payload: userdetail,
+  };
 }
 
-export default addNewUser;
+export function fetchNewUser(users) {
+  return {
+    type: "FETCH_USER",
+    payload: users,
+  };
+}
