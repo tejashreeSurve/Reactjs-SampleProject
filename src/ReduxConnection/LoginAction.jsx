@@ -18,7 +18,12 @@ export const setLoading = (value) => ({
   payload: value,
 });
 
-export const setErrors = (value) => ({
-  type: "SET_ERRORS",
+export const setUsernameError = (value) => ({
+  type: "SET_USERNAMEERROR",
+  payload: value,
+});
+
+export const setPasswordError = (value) => ({
+  type: "SET_PASSWORDERROR",
   payload: value,
 });

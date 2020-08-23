@@ -1,12 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Router from './Router/Router';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Routes from "./Routes/Routes";
 
 function App() {
   return (
-    <div >
-      <Router/>
+    <div>
+      <Routes />
     </div>
   );
 }

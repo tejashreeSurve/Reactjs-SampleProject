@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { AppBar, Typography, Toolbar, Button, Link } from "@material-ui/core";
 import { getAllUser } from "../Services/UserServices";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 class HeaderBar extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +13,7 @@ class HeaderBar extends Component {
   logout = () => {
     localStorage.removeItem("token");
     console.log("Successfully Logout");
-    this.props.history.push("/");
+    return <Redirect to="/" />;
   };
 
   // () => this.props.history.push("/userList")}
