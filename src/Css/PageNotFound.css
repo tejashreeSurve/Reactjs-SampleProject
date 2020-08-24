@@ -1,0 +1,15 @@
+/* .main-pageNotFound {
+    display: flex;
+    justify-content: center;
+}
+
+.main-pageNotFound h1 {
+    size: 50%;
+} */
+
+.main-pageNotFound {
+    position: fixed;
+    top: 10%;
+    left: 30%;
+    font-size: 50px;
+}

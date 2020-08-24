@@ -31,6 +31,7 @@ import {
 } from "../ReduxConnection/LoginAction.jsx";
 import { Redirect } from "react-router-dom";
 import * as Yup from "yup";
+import auth from "../Component/Authentication.jsx";
 
 const LoginForm = (props) => {
   const [state, dispatch] = useReducer(LoginReducer, initialState);
@@ -145,7 +146,7 @@ const LoginForm = (props) => {
   //     });
   // };
   const loginForm = (event) => {
-    console.log("hello =====");
+    console.log("hello In LoginForm funtion");
     event.preventDefault();
     validationSchema
       .validate({ userEmail, password }, { abortEarly: false })
@@ -171,10 +172,13 @@ const LoginForm = (props) => {
               localStorage.setItem("token", response.data.message);
               alert(`Login Successfully`);
               console.log(localStorage.token);
-              if (localStorage.token) {
-                //props.history.push("/headerbar");
-                return <Redirect to="/headerbar" />;
-              }
+              // if (localStorage.token) {
+              //   return props.history.push("/headerbar");
+              //   // return <Redirect to="/headerbar" />;
+              // }
+              auth.login(() => {
+                props.history.push("/headerBar");
+              });
             })
             .catch((error) => {
               console.log(error);
