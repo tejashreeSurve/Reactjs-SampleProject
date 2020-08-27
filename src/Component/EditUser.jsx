@@ -1,211 +1,222 @@
-import React, { Component } from "react";
+import React, { useEffect, useReducer } from "react";
 import { getUser, update } from "../Services/UserServices";
-import {
-  Card,
-  TextField,
-  CardContent,
-  Avatar,
-  Button,
-} from "@material-ui/core";
+import { Card, TextField, CardContent, Button } from "@material-ui/core";
 import "../Css/EditUser.css";
 import { editUser } from "../Services/UserServices";
+import EditReducer, { initialState } from "../ReduxConnection/EditReducer.jsx";
+import * as Yup from "yup";
+import {
+  setFname,
+  setFnameError,
+  setIsverified,
+  setLname,
+  setLnameError,
+  setMname,
+  setMnamesError,
+  setPassword,
+  setUserEmail,
+} from "../Action/EditAction.jsx";
 
-class EditUser extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userId: this.props.match.params.userId,
-      fName: "",
-      mName: "",
-      lName: "",
-      userEmail: "",
-      password: "",
-      isVerified: "",
-      errors: {},
-    };
-    this.showUser = this.showUser.bind(this);
-  }
+const EditUser = (props) => {
+  const [state, dispatch] = useReducer(EditReducer, initialState);
 
-  axios = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
+  const {
+    userid,
+    fname,
+    mname,
+    lname,
+    useremail,
+    password,
+    isverified,
+    fnameerror,
+    mnameerror,
+    lnameerror,
+  } = state;
+
+  initialState.userid = props.match.params.userId;
+  console.log("Edit user", state);
+  const axios = (event) => {
+    dispatch({
+      type: `SET_${event.target.name.toUpperCase()}`,
+      payload: event.target.value,
     });
   };
-  componentDidMount() {
-    this.showUser();
-  }
-  showUser() {
+
+  useEffect(() => {
+    showUser();
+  }, []);
+  const showUser = () => {
     console.log("hello");
-    console.log(this.state.userId);
+    console.log(userid);
     var userToken = localStorage.getItem("token");
-    let userid = this.state.userId;
-    getUser(userid, userToken).then((response) => {
+    let userId = state.userid;
+    console.log("userId", state.userid);
+    getUser(userId, userToken).then((response) => {
       console.log(response.data.data.fName);
-      this.setState({
-        fName: response.data.data.fName,
-        mName: response.data.data.mName,
-        lName: response.data.data.lName,
-        userEmail: response.data.data.userEmail,
-        password: response.data.data.password,
-        isVerified: response.data.data.isVerified,
-      });
+      dispatch(setFname(response.data.data.fName));
+      dispatch(setMname(response.data.data.mName));
+      dispatch(setLname(response.data.data.lName));
+      dispatch(setUserEmail(response.data.data.userEmail));
+      dispatch(setPassword(response.data.data.password));
+      dispatch(setIsverified(response.data.data.isVerified));
     });
-  }
-
-  validateForm = () => {
-    let errors = {};
-    let formIsValidate = true;
-    if (!this.state.fName) {
-      errors["fName"] = "*enter first Name";
-      formIsValidate = false;
-    }
-    if (!this.state.mName) {
-      errors["mName"] = "*enter Middle Name";
-      formIsValidate = false;
-    }
-    if (!this.state.lName) {
-      errors["lName"] = "*enter Last Name";
-      formIsValidate = false;
-    }
-
-    this.setState({
-      errors: errors,
-    });
-    return formIsValidate;
   };
 
-  updateUser() {
-    if (this.validateForm()) {
-      let user = {};
-      var token = localStorage.getItem("token");
-      user.userId = this.state.userId;
-      user.fName = this.state.fName;
-      user.mName = this.state.mName;
-      user.lName = this.state.lName;
-      user.userEmail = this.state.userEmail;
-      user.password = this.state.password;
-      user.isVerified = this.state.isVerified;
-      console.log(user);
+  const validationSchema = Yup.object().shape({
+    fname: Yup.string().required("First Name is Required"),
+    mname: Yup.string().required("Middle Name is Required"),
+    lname: Yup.string().required("Last Name is Required"),
+  });
 
-      editUser(this.state.userId, user, token)
-        .then((response) => {
-          console.log(response);
-          alert(`User is successfully  update !!!`);
-          this.props.history.push("/headerbar/userList");
-        })
-        .catch((error) => {
-          console.log("Error", error.message);
-          console.log(error.response.data.message, "User Registration failed");
-          alert(error.response.data.message);
+  const updateUser = () => {
+    validationSchema
+      .validate({ fname, mname, lname }, { abortEarly: false })
+      .then(() => {
+        let user = {};
+        var token = localStorage.getItem("token");
+        user.userId = userid;
+        user.fName = fname;
+        user.mName = mname;
+        user.lName = lname;
+        user.userEmail = useremail;
+        user.password = password;
+        user.isVerified = isverified;
+        console.log(user);
+        editUser(userid, user, token)
+          .then((response) => {
+            console.log(response);
+            alert(`User is successfully  update !!!`);
+            props.history.push("/headerbar/userList");
+          })
+          .catch((error) => {
+            console.log("Error", error.message);
+            console.log(
+              error.response.data.message,
+              "User Registration failed"
+            );
+            alert(error.response.data.message);
+          });
+      })
+      .catch((error) => {
+        error.inner.forEach((element) => {
+          if (element.path === "fname") {
+            dispatch(setFnameError(element.message));
+            console.log(element.message);
+          }
+          if (element.path === "mname") {
+            dispatch(setMnamesError(element.message));
+            console.log(element.message);
+          }
+          if (element.path === "lname") {
+            dispatch(setLnameError(element.message));
+            console.log(element.message);
+          }
         });
-    }
-  }
+      });
+  };
+  return (
+    <div>
+      <Card className="updateForm">
+        <CardContent>
+          <h4>Update Form</h4>
+          <div>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="userId"
+              label="user Id"
+              name="userId"
+              value={userid}
+              onChange={axios}
+              disabled
+            ></TextField>
 
-  render() {
-    return (
-      <div>
-        <Card className="updateForm">
-          <CardContent>
-            <h4>Update Form</h4>
-            <div>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="userId"
-                label="user Id"
-                name="userId"
-                value={this.state.userId}
-                onChange={this.axios}
-                disabled
-              ></TextField>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="firstname"
+              label="First Name"
+              name="fName"
+              value={fname}
+              onChange={axios}
+              error={fnameerror}
+              helperText={fnameerror}
+            ></TextField>
 
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="firstname"
-                label="First Name"
-                name="fName"
-                value={this.state.fName}
-                onChange={this.axios}
-                error={this.state.errors.fName}
-                helperText={this.state.errors.fName}
-              ></TextField>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth="true"
+              id="middlename"
+              label="Middle Name"
+              name="mName"
+              value={mname}
+              onChange={axios}
+              error={mnameerror}
+              helperText={mnameerror}
+            ></TextField>
 
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth="true"
-                id="middlename"
-                label="Middle Name"
-                name="mName"
-                value={this.state.mName}
-                onChange={this.axios}
-                error={this.state.errors.mName}
-                helperText={this.state.errors.mName}
-              ></TextField>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth="true"
+              id="lastname"
+              label="Last Name"
+              name="lName"
+              value={lname}
+              onChange={axios}
+              error={lnameerror}
+              helperText={lnameerror}
+            ></TextField>
 
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth="true"
-                id="lastname"
-                label="Last Name"
-                name="lName"
-                value={this.state.lName}
-                onChange={this.axios}
-                error={this.state.errors.lName}
-                helperText={this.state.errors.lame}
-              ></TextField>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth="true"
+              id="email"
+              label="Email Address"
+              name="userEmail"
+              value={useremail}
+              onChange={axios}
+              disabled
+            ></TextField>
 
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth="true"
-                id="email"
-                label="Email Address"
-                name="userEmail"
-                value={this.state.userEmail}
-                onChange={this.axios}
-                disabled
-              ></TextField>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth="true"
+              id="email"
+              label="Password"
+              name="password"
+              value={password}
+              type="password"
+              onChange={axios}
+              disabled
+            ></TextField>
 
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth="true"
-                id="email"
-                label="Password"
-                name="password"
-                value={this.state.password}
-                type="password"
-                onChange={this.axios}
-                disabled
-              ></TextField>
-
-              <Button
-                className="signup"
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => this.updateUser()}
-              >
-                Update
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-}
+            <Button
+              className="signup"
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={() => updateUser()}
+            >
+              Update
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
 export default EditUser;

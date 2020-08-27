@@ -13,20 +13,15 @@ import SignUpReducer, {
   initialState,
 } from "../ReduxConnection/SignUpReducer.jsx";
 import * as Yup from "yup";
+import {
+  setLnameError,
+  setFnameError,
+  setMnameError,
+  setUseremailError,
+  setPasswordError,
+} from "../Action/SignUpAction.jsx";
 
 const SignUpForm = (props) => {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     fName: "",
-  //     mName: "",
-  //     lName: "",
-  //     userEmail: "",
-  //     password: "",
-  //     errors: {},
-  //   };
-  // }
-
   const [state, dispatch] = useReducer(SignUpReducer, initialState);
 
   const {
@@ -41,6 +36,8 @@ const SignUpForm = (props) => {
     useremailerror,
     passworderror,
   } = state;
+
+  console.log(state);
 
   const axois = (event) => {
     dispatch({
@@ -63,53 +60,6 @@ const SignUpForm = (props) => {
       )
       .required("Password is Required"),
   });
-
-  // axios = (event) => {
-  //   this.setState({
-  //     [event.target.name]: event.target.value,
-  //   });
-  // };
-
-  // validateForm = () => {
-  //   let errors = {};
-  //   let formIsValidate = true;
-  //   if (!this.state.fName) {
-  //     errors["fName"] = "*enter first Name";
-  //     formIsValidate = false;
-  //   }
-  //   if (!this.state.mName) {
-  //     errors["mName"] = "*enter Middle Name";
-  //     formIsValidate = false;
-  //   }
-  //   if (!this.state.lName) {
-  //     errors["lName"] = "*enter Last Name";
-  //     formIsValidate = false;
-  //   }
-  //   if (!this.state.userEmail) {
-  //     errors["userEmail"] = "*enter email ";
-  //     formIsValidate = false;
-  //   }
-  //   if (!this.state.password) {
-  //     errors["password"] = "*enter password ";
-  //     formIsValidate = false;
-  //   }
-  //   if (
-  //     !RegExp(
-  //       "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\. [A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-  //     ).test(this.state.userEmail)
-  //   ) {
-  //     errors["password"] = "*enter valide User Email ";
-  //     formIsValidate = false;
-  //   }
-  //   if (!RegExp("(?=.*[0-9])").test(this.state.password)) {
-  //     errors["password"] = "*enter valide password ";
-  //     formIsValidate = false;
-  //   }
-  //   this.setState({
-  //     errors: errors,
-  //   });
-  //   return formIsValidate;
-  // };
 
   const registrationForm = () => {
     validationSchema
@@ -146,66 +96,28 @@ const SignUpForm = (props) => {
         error.inner.forEach((element) => {
           console.log(element);
           if (element.path === "fname") {
-            dispatch({
-              type: "SET_FNAMEERROR",
-              payload: `*${element.message}`,
-            });
+            dispatch(setFnameError(element.message));
             console.log(element.message);
           }
           if (element.path === "mname") {
-            dispatch({
-              type: "SET_MNAMEERROR",
-              payload: element.message,
-            });
+            dispatch(setMnameError(element.message));
             console.log(element.message);
           }
           if (element.path === "lname") {
-            dispatch({
-              type: "SET_LNAMEERROR",
-              payload: element.message,
-            });
+            dispatch(setLnameError(element.message));
             console.log(element.message);
           }
           if (element.path === "useremail") {
-            dispatch({
-              type: "SET_USEREMAILERROR",
-              payload: element.message,
-            });
+            dispatch(setUseremailError(element.message));
             console.log(element.message);
           }
           if (element.path === "password") {
-            dispatch({
-              type: "SET_PASSWORDERROR",
-              payload: element.message,
-            });
+            dispatch(setPasswordError(element.message));
             console.log(element.message);
           }
         });
       });
   };
-  // registrationForm() {
-  //   if (this.validateForm()) {
-  //     let user = {};
-
-  //     user.fName = this.state.fName;
-  //     user.mName = this.state.mName;
-  //     user.lName = this.state.lName;
-  //     user.userEmail = this.state.userEmail;
-  //     user.password = this.state.password;
-  //     console.log(user);
-  //     addUser(user)
-  //       .then((Response) => {
-  //         console.log(Response, "User Registered successfully!!");
-  //         alert(`User Registered successfully`);
-  //         this.props.history.push("/");
-  //       })
-  //       .catch((error) => {
-  //         console.log("Error", error.response);
-  //         console.log(error.response.data.message, "User Registration failed");
-  //         alert(error.response.data.message);
-  //       });
-  //   }
-  // }
 
   return (
     <Card className="signupcard">

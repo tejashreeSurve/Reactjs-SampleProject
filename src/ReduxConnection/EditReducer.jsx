@@ -1,19 +1,20 @@
 export const initialState = {
+  userid: "",
   fname: "",
   mname: "",
   lname: "",
   useremail: "",
   password: "",
+  isverified: "",
   fnameerror: "",
   mnameerror: "",
   lnameerror: "",
-  useremailerror: "",
-  passworderror: "",
-  done: false,
 };
 
-function SignUpReducer(state = initialState, action) {
+function EditReducer(state = initialState, action) {
   switch (action.type) {
+    case "SET_USERID":
+      return { ...state, userid: action.payload };
     case "SET_FNAME":
       return { ...state, fname: action.payload };
     case "SET_MNAME":
@@ -24,19 +25,17 @@ function SignUpReducer(state = initialState, action) {
       return { ...state, useremail: action.payload };
     case "SET_PASSWORD":
       return { ...state, password: action.payload };
+    case "SET_ISVERIFIED":
+      return { ...state, isverified: action.payload };
     case "SET_FNAMEERROR":
       return { ...state, fnameerror: action.payload };
     case "SET_MNAMEERROR":
       return { ...state, mnameerror: action.payload };
     case "SET_LNAMEERROR":
       return { ...state, lnameerror: action.payload };
-    case "SET_USEREMAILERROR":
-      return { ...state, useremailerror: action.payload };
-    case "SET_PASSWORDERROR":
-      return { ...state, passworderror: action.payload };
     default:
       return initialState;
   }
 }
 
-export default SignUpReducer;
+export default EditReducer;

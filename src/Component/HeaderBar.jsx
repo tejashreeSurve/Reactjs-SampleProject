@@ -5,15 +5,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import auth from "../Component/Authentication.jsx";
 const HeaderBar = (props) => {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     userListArray: [],
-  //   };
-  // }
-
   const displayUserList = () => {
-    // if (localStorage.getItem === null) props.history.push(`/pageNotFound`);
     props.history.push(`/headerbar/userList`);
   };
   const logout = () => {
@@ -24,7 +16,6 @@ const HeaderBar = (props) => {
     });
   };
 
-  // () => this.props.history.push("/userList")}
   return (
     <AppBar position="static">
       <Toolbar>
