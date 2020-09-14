@@ -1,10 +1,11 @@
 export const initialState = {
-  useremail: "",
-  password: "",
+  useremail: "teju123@gmail.com",
+  password: "teju123",
   showpassword: "",
   useremailerror: "",
   passworderror: "",
   loading: false,
+  userToken: "",
 };
 
 function LoginReducer(state = initialState, action) {
@@ -21,8 +22,10 @@ function LoginReducer(state = initialState, action) {
       return { ...state, passworderror: action.payload };
     case "SET_LOADING":
       return { ...state, loading: action.payload };
+    case "SET_USERTOKEN":
+      return { ...state, userToken: action.payload };
     default:
-      return initialState;
+      return state;
   }
 }
 

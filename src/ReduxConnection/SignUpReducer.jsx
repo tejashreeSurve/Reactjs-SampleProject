@@ -35,7 +35,7 @@ function SignUpReducer(state = initialState, action) {
     case "SET_PASSWORDERROR":
       return { ...state, passworderror: action.payload };
     default:
-      return initialState;
+      return state;
   }
 }
 

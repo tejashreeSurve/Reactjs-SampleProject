@@ -25,9 +25,9 @@ import {
   setShowpassword,
   setUseremailError,
   setPasswordError,
+  loginAction,
 } from "../Action/LoginAction.jsx";
 import * as Yup from "yup";
-import auth from "../Component/Authentication.jsx";
 import { useDispatch, useSelector } from "react-redux";
 
 const LoginForm = (props) => {
@@ -43,6 +43,8 @@ const LoginForm = (props) => {
     passworderror,
   } = state;
 
+  const { userDetails, userListData } = reduxResult;
+
   console.log("login state", state);
   const axois = (event) => {
     dispatch({
@@ -50,7 +52,7 @@ const LoginForm = (props) => {
       payload: event.target.value,
     });
   };
-
+  const loginDetails = { useremail, password };
   const validationSchema = Yup.object().shape({
     useremail: Yup.string()
       .email("Email must be a valid Email")
@@ -63,52 +65,33 @@ const LoginForm = (props) => {
       .required("Password is Required"),
   });
 
+  let loginData = {};
+
+  loginData.userEmail = useremail;
+  loginData.password = password;
   const loginForm = (event) => {
     event.preventDefault();
-    validationSchema
-      .validate({ useremail, password }, { abortEarly: false })
-      .then(() => {
-        dispatch(setLoading(true));
-        let loginData = {};
+    validationSchema.isValid(loginDetails).then(function (valid) {
+      if (!valid) {
+        validationSchema
+          .validate(loginDetails, { abortEarly: false })
+          .catch((error) => {
+            error.inner.forEach((ele) => {
+              if (ele.path === "username")
+                dispatch(setUseremailError(ele.message));
 
-        loginData.userEmail = useremail;
-        loginData.password = password;
-        trackPromise(
-          loginUser(loginData)
-            .then((response) => {
-              console.log(response);
-              console.log("data", response.data.data);
-              reduxDispatch({
-                type: "SET_USERDETAILS",
-                payload: response.data.data,
-              });
-              localStorage.setItem("token", response.data.message);
-              alert(`Login Successfully`);
-              console.log(localStorage.token);
-              auth.login(() => {
-                props.history.push("/headerbar");
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-              alert(`Login Failed`);
-            })
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-        error.inner.forEach((element) => {
-          console.log(element);
-          if (element.path === "useremail") {
-            dispatch(setUseremailError(element.message));
-            console.log(element.message);
-          }
-          if (element.path === "password") {
-            dispatch(setPasswordError(element.message));
-            console.log(element.message);
-          }
-        });
-      });
+              if (
+                ele.path ===
+                "passwo                                                                                  rd"
+              )
+                dispatch(setPasswordError(ele.message));
+            });
+          });
+      } else {
+        reduxDispatch(loginAction(loginData));
+        props.history.push("/headerbar");
+      }
+    });
   };
 
   return (

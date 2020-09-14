@@ -27,3 +27,13 @@ export const setPasswordError = (value) => ({
   type: "SET_PASSWORDERROR",
   payload: value,
 });
+
+export const setUserToken = (value) => ({
+  type: "SET_USERTOKEN",
+  payload: value,
+});
+
+export const loginAction = (value) => ({
+  type: "LOGIN_ACTION",
+  payload: value,
+});

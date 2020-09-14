@@ -34,7 +34,7 @@ function EditReducer(state = initialState, action) {
     case "SET_LNAMEERROR":
       return { ...state, lnameerror: action.payload };
     default:
-      return initialState;
+      return state;
   }
 }
 

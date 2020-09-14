@@ -1,10 +1,10 @@
 import React, { Component, useEffect } from "react";
 import "../Css/User.css";
-import { getAllUser, deleteUser } from "../Services/UserServices";
 import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllUserData, deleteUserData } from "../Action/UserAction.jsx";
 
 const User = () => {
   const reduxResult = useSelector((state) => state);
@@ -17,16 +17,9 @@ const User = () => {
     userList();
   }, []);
   const userList = () => {
-    var userToken = localStorage.getItem("token");
+    const userToken = localStorage.getItem("token");
     console.log(userToken);
-    getAllUser(userToken).then((response) => {
-      console.log("hiii", response.data);
-      console.log(response.data.message);
-      reduxDispatch({
-        type: "SET_USERSLIST",
-        payload: response.data.data,
-      });
-    });
+    reduxDispatch(getAllUserData(userToken));
   };
 
   const deleteUserFunc = (userId) => {
@@ -35,12 +28,13 @@ const User = () => {
     );
     if (performDelete) {
       console.log("Hello user", userId);
-      var userToken = localStorage.getItem("token");
-      deleteUser(userId, userToken).then((response) => {
-        console.log("Delete Response", response.data);
-        console.log(response.data.message);
-        userList();
-      });
+      const userToken = localStorage.getItem("token");
+      let deleteVariables = {};
+
+      deleteVariables.userId = userId;
+      deleteVariables.userToken = userToken;
+      reduxDispatch(deleteUserData(deleteVariables));
+      userList();
     }
   };
 

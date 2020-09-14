@@ -19,11 +19,14 @@ import {
   setMnameError,
   setUseremailError,
   setPasswordError,
+  signUpForm,
 } from "../Action/SignUpAction.jsx";
+import { useDispatch, useSelector } from "react-redux";
 
 const SignUpForm = (props) => {
   const [state, dispatch] = useReducer(SignUpReducer, initialState);
-
+  const reduxResult = useSelector((state) => state);
+  const reduxDispatch = useDispatch();
   const {
     fname,
     mname,
@@ -63,59 +66,106 @@ const SignUpForm = (props) => {
 
   const registrationForm = () => {
     validationSchema
-      .validate(
-        { fname, mname, lname, useremail, password },
-        { abortEarly: false }
-      )
-      .then(() => {
-        let user = {};
+      .isValid({ fname, mname, lname, useremail, password })
+      .then(function (valid) {
+        if (!valid) {
+          validationSchema
+            .validate(
+              { fname, mname, lname, useremail, password },
+              { abortEarly: false }
+            )
+            .catch((error) => {
+              error.inner.forEach((element) => {
+                console.log(element);
+                if (element.path === "fname") {
+                  dispatch(setFnameError(element.message));
+                  console.log(element.message);
+                }
+                if (element.path === "mname") {
+                  dispatch(setMnameError(element.message));
+                  console.log(element.message);
+                }
+                if (element.path === "lname") {
+                  dispatch(setLnameError(element.message));
+                  console.log(element.message);
+                }
+                if (element.path === "useremail") {
+                  dispatch(setUseremailError(element.message));
+                  console.log(element.message);
+                }
+                if (element.path === "password") {
+                  dispatch(setPasswordError(element.message));
+                  console.log(element.message);
+                }
+              });
+            });
+        } else {
+          let user = {};
 
-        user.fName = fname;
-        user.mName = mname;
-        user.lName = lname;
-        user.userEmail = useremail;
-        user.password = password;
-        console.log(user);
-        addUser(user)
-          .then((Response) => {
-            console.log(Response, "User Registered successfully!!");
-            alert(`User Registered successfully`);
-            props.history.push("/");
-          })
-          .catch((error) => {
-            console.log("Error", error.response);
-            console.log(
-              error.response.data.message,
-              "User Registration failed"
-            );
-            alert(error.response.data.message);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        error.inner.forEach((element) => {
-          console.log(element);
-          if (element.path === "fname") {
-            dispatch(setFnameError(element.message));
-            console.log(element.message);
-          }
-          if (element.path === "mname") {
-            dispatch(setMnameError(element.message));
-            console.log(element.message);
-          }
-          if (element.path === "lname") {
-            dispatch(setLnameError(element.message));
-            console.log(element.message);
-          }
-          if (element.path === "useremail") {
-            dispatch(setUseremailError(element.message));
-            console.log(element.message);
-          }
-          if (element.path === "password") {
-            dispatch(setPasswordError(element.message));
-            console.log(element.message);
-          }
-        });
+          user.fName = fname;
+          user.mName = mname;
+          user.lName = lname;
+          user.userEmail = useremail;
+          user.password = password;
+          console.log(user);
+          reduxDispatch(signUpForm(user));
+          props.history.push("/");
+        }
+        // validationSchema
+        //   .validate(
+        //     { fname, mname, lname, useremail, password },
+        //     { abortEarly: false }
+        //   )
+        //   .then(() => {
+        //     let user = {};
+
+        //     user.fName = fname;
+        //     user.mName = mname;
+        //     user.lName = lname;
+        //     user.userEmail = useremail;
+        //     user.password = password;
+        //     console.log(user);
+        //     addUser(user)
+        //       .then((Response) => {
+        //         console.log(Response, "User Registered successfully!!");
+        //         alert(`User Registered successfully`);
+        //         props.history.push("/");
+        //       })
+        //       .catch((error) => {
+        //         console.log("Error", error.response);
+        //         console.log(
+        //           error.response.data.message,
+        //           "User Registration failed"
+        //         );
+        //         alert(error.response.data.message);
+        //       });
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //     error.inner.forEach((element) => {
+        //       console.log(element);
+        //       if (element.path === "fname") {
+        //         dispatch(setFnameError(element.message));
+        //         console.log(element.message);
+        //       }
+        //       if (element.path === "mname") {
+        //         dispatch(setMnameError(element.message));
+        //         console.log(element.message);
+        //       }
+        //       if (element.path === "lname") {
+        //         dispatch(setLnameError(element.message));
+        //         console.log(element.message);
+        //       }
+        //       if (element.path === "useremail") {
+        //         dispatch(setUseremailError(element.message));
+        //         console.log(element.message);
+        //       }
+        //       if (element.path === "password") {
+        //         dispatch(setPasswordError(element.message));
+        //         console.log(element.message);
+        //       }
+        //     });
+        //   });
       });
   };
 

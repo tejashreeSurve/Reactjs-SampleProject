@@ -1,18 +1,19 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import auth from "../Component/Authentication.jsx";
+import { isAuthenticate } from "../Component/isAuthenticate.jsx";
 export const ProtectedRoutes = ({ component: Component, ...rest }) => {
+  console.log("boolean", isAuthenticate());
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (auth.isAuthenticate()) {
+        if (isAuthenticate()) {
           return <Component {...props} />;
         } else {
           return (
             <Redirect
               to={{
-                pathname: "/restrictedAccess",
+                pathname: "/",
                 state: {
                   from: props.location,
                 },

@@ -18,3 +18,8 @@ export const setPasswordError = (value) => ({
   type: "SET_PASSWORDERROR",
   payload: `*${value}`,
 });
+
+export const signUpForm = (value) => ({
+  type: "SIGN_UP_FORM",
+  payload: value,
+});

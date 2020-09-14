@@ -42,3 +42,8 @@ export const setLnameError = (value) => ({
   type: "SET_LNAMEERROR",
   payload: value,
 });
+
+export const getUserById = (value) => ({
+  type: "GET_USER_BY_ID",
+  payload: value,
+});

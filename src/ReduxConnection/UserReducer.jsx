@@ -8,6 +8,8 @@ function UserReducer(state = initialState, action) {
   switch (action.type) {
     case "SET_USERLISTARRAY":
       return { ...state, userListArray: action.payload };
+    default:
+      return state;
   }
 }
 

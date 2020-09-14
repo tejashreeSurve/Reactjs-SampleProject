@@ -3,7 +3,7 @@ import { AppBar, Typography, Toolbar, Button, Link } from "@material-ui/core";
 import { getAllUser } from "../Services/UserServices";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import auth from "../Component/Authentication.jsx";
+
 const HeaderBar = (props) => {
   const displayUserList = () => {
     props.history.push(`/headerbar/userList`);
@@ -11,9 +11,7 @@ const HeaderBar = (props) => {
   const logout = () => {
     localStorage.removeItem("token");
     console.log("Successfully Logout");
-    auth.logout(() => {
-      props.history.push("/");
-    });
+    props.history.push("/");
   };
 
   return (

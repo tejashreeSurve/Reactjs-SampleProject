@@ -3,9 +3,11 @@ import { getUser, update } from "../Services/UserServices";
 import { Card, TextField, CardContent, Button } from "@material-ui/core";
 import "../Css/EditUser.css";
 import { editUser } from "../Services/UserServices";
+import { useDispatch, useSelector } from "react-redux";
 import EditReducer, { initialState } from "../ReduxConnection/EditReducer.jsx";
 import * as Yup from "yup";
 import {
+  getUserById,
   setFname,
   setFnameError,
   setIsverified,
@@ -19,7 +21,9 @@ import {
 
 const EditUser = (props) => {
   const [state, dispatch] = useReducer(EditReducer, initialState);
-
+  const reduxResult = useSelector((state) => state);
+  const { userListData, userDetails } = reduxResult;
+  const reduxDispatch = useDispatch();
   const {
     userid,
     fname,
@@ -48,18 +52,15 @@ const EditUser = (props) => {
   const showUser = () => {
     console.log("hello");
     console.log(userid);
-    var userToken = localStorage.getItem("token");
+    const userToken = localStorage.getItem("token");
     let userId = state.userid;
     console.log("userId", state.userid);
-    getUser(userId, userToken).then((response) => {
-      console.log(response.data.data.fName);
-      dispatch(setFname(response.data.data.fName));
-      dispatch(setMname(response.data.data.mName));
-      dispatch(setLname(response.data.data.lName));
-      dispatch(setUserEmail(response.data.data.userEmail));
-      dispatch(setPassword(response.data.data.password));
-      dispatch(setIsverified(response.data.data.isVerified));
-    });
+    let editVariables = {};
+
+    editVariables.userId = userId;
+    editVariables.userToken = userToken;
+    editVariables.dispatch = dispatch;
+    reduxDispatch(getUserById(editVariables));
   };
 
   const validationSchema = Yup.object().shape({
